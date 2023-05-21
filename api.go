@@ -6,6 +6,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
+type apiFunc func(http.ResponseWriter, *http.Request) error
+
 type APIServer struct {
 	listenAddr string
 }
