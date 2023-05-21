@@ -61,7 +61,7 @@ func (s *APIServer) handleAccount(w http.ResponseWriter, r *http.Request) error 
 		return s.handleDeleteAccount(w, r)
 	}	
 
-	return fmt.Errorf("method not allowed")
+	return fmt.Errorf("method not allowed %s", r.Method)
 }
 
 func (s *APIServer) handleGetAccount(w http.ResponseWriter, r *http.Request) error {
