@@ -11,6 +11,6 @@ func main() {
 		log.Fatal(err)
 	}
 	fmt.Printf("%+v\n", store)
-	//server := NewAPIServer(":8001", store)
-	//server.Run()
+	server := NewAPIServer(":8001", store)
+	server.Run()
 }

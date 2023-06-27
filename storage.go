@@ -30,6 +30,29 @@ func NewPostgresStore() (*PostgresStore, error){
 
 	return &PostgresStore{
 		db: db,
-	}, nil
-	
+	}, nil	
 }
+
+func (s *PostgresStore) CreateAccount(*Account) error {
+	return nil
+}
+
+func (s *PostgresStore) UpdateAccount(*Account) error {
+	return nil
+}
+
+func (s *PostgresStore) DeleteAccount(id int) error {
+	return nil
+}
+
+func (s *PostgresStore) GetAccountByID(id int) (*Account, error) {
+	return nil, nil
+}
+
+
+
+
+
+
+
+
