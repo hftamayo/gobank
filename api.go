@@ -79,8 +79,8 @@ func (s *APIServer) handleGetAccountByID(w http.ResponseWriter, r *http.Request)
 }
 
 func withJWTAuth(handlerFunc http.HandlerFunc) http.HandlerFunc {
-	fmt.Println("calling JWT auth middleware")
 	return func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("calling JWT Auth Middleware")
 		handlerFunc(w, r)
 	}
 }
