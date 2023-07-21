@@ -29,7 +29,7 @@ func (s *APIServer) Run() {
 
 	router.HandleFunc("/account", makeHTTPHandleFunc(s.handleAccount))
 
-	router.HandleFunc("/account/{id}", makeHTTPHandleFunc(s.handleGetAccountByID))
+	router.HandleFunc("/account/{id}", withJWTAuth(makeHTTPHandleFunc(s.handleGetAccountByID)))
 
 	router.HandleFunc("/transfer/{accountNumber}", makeHTTPHandleFunc(s.handleTransfer))
 
@@ -76,6 +76,13 @@ func (s *APIServer) handleGetAccountByID(w http.ResponseWriter, r *http.Request)
 	}
 
 	return fmt.Errorf("Method not allowed %s", r.Method)
+}
+
+func withJWTAuth(handlerFunc http.HandlerFunc) http.HandlerFunc {
+	fmt.Println("calling JWT auth middleware")
+	return func(w http.ResponseWriter, r *http.Request) {
+		handlerFunc(w, r)
+	}
 }
 
 func (s *APIServer) handleCreateAccount(w http.ResponseWriter, r *http.Request) error {
