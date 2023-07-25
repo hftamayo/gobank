@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 	"log"
 	"net/http"
 	"strconv"
@@ -77,13 +78,6 @@ func (s *APIServer) handleGetAccountByID(w http.ResponseWriter, r *http.Request)
 	}
 
 	return fmt.Errorf("Method not allowed %s", r.Method)
-}
-
-func withJWTAuth(handlerFunc http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("calling JWT Auth Middleware")
-		handlerFunc(w, r)
-	}
 }
 
 func (s *APIServer) handleCreateAccount(w http.ResponseWriter, r *http.Request) error {
