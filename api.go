@@ -153,7 +153,7 @@ func withJWTAuth(handlerFunc http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		claims := token.Claims(jwt.MapClains)
+		claims := token.Claims.(jwt.MapClaims)
 		fmt.Println(claims)
 		handlerFunc(w, r)
 	}
