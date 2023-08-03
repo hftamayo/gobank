@@ -91,6 +91,12 @@ func (s *APIServer) handleCreateAccount(w http.ResponseWriter, r *http.Request) 
 		return err
 	}
 
+	tokenString, err := createJWT(account)
+	if err != nil {
+		return err
+	}
+	fmt.Println("JWT Token: ", tokenString)
+
 	return WriteJSON(w, http.StatusOK, account)
 }
 
@@ -121,6 +127,16 @@ func WriteJSON(w http.ResponseWriter, status int, v any) error {
 	return json.NewEncoder(w).Encode(v)
 }
 
+func createJWT(account *Account) (string, error){
+	claims := &jwt.MapClaims{
+		"ExpiresAt":	15000,
+		"accountNumber":	account.Number,
+	}
+	secret := os.Getenv("JWT_SECRET")
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString(secret)
+}
+
 func withJWTAuth(handlerFunc http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("calling JWT auth middleware")
@@ -137,6 +153,7 @@ func withJWTAuth(handlerFunc http.HandlerFunc) http.HandlerFunc {
 }
 
 func validateJWT(tokenString string) (*jwt.Token, error) {
+	//en la terminal: export JWT_SECRET = hunter
 	secret := os.Getenv("JWT_SECRET")
 	return jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error){
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
