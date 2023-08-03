@@ -134,7 +134,7 @@ func createJWT(account *Account) (string, error){
 	}
 	secret := os.Getenv("JWT_SECRET")
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString(secret)
+	return token.SignedString([]byte(secret))
 }
 
 func withJWTAuth(handlerFunc http.HandlerFunc) http.HandlerFunc {
