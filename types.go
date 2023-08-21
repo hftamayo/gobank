@@ -2,6 +2,7 @@ package main
 
 import (
 	"math/rand"
+	"golang.org/x/crypto/bcrypt"
 	"time"
 )
 
