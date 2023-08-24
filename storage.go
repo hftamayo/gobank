@@ -6,6 +6,14 @@ import (
 	_ "github.com/lib/pq"
 )
 
+const (
+	host	= "172.24.0.2"
+	port	= 5432
+	user	= "gobank"
+	password= "gobank"
+	dbname	= "gobank_development"
+)
+
 type Storage interface {
 	CreateAccount (*Account) error
 	DeleteAccount (int) error
@@ -22,7 +30,8 @@ type PostgresStore struct {
 
 func NewPostgresStore() (*PostgresStore, error){
 	//connStr := "user=gobank port=5435 dbname=gobank password=gobank sslmode=disable"
-	connStr := "user=gobank port=5432 dbname=gobank password=gobank sslmode=disable host=172.26.0.2"
+	//connStr := "user=gobank port=5432 dbname=gobank password=gobank sslmode=disable host=172.22.0.2"
+	connStr := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		return nil, err
