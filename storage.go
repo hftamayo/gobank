@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	host	= "172.24.0.2"
+	host	= "pgdocker"
 	port	= 5432
 	user	= "gobank"
 	password= "gobank"
