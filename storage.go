@@ -11,7 +11,7 @@ const (
 	port	= 5432
 	user	= "gobank"
 	password= "gobank"
-	dbname	= "gobank_development"
+	dbname	= "gobank"
 )
 
 type Storage interface {
