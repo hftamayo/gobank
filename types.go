@@ -41,8 +41,8 @@ func NewAccount(firstName, lastName, password string) (*Account, error) {
 	return &Account{
 		FirstName:		firstName,
 		LastName:		lastName,
-		EncryptedPassword:	string(encpw),
 		Number:			int64(rand.Intn(1000000)),
+		EncryptedPassword:	string(encpw),
 		CreatedAt:		time.Now().UTC(),
 	}, nil
 }
