@@ -37,6 +37,10 @@ type Account struct {
 	CreatedAt		time.Time	`json:"createdAt"`
 }
 
+func (a *Account) ValidPassword(pw string) bool {
+	return bcrypt.CompareHashAndPassword([]byte(a.EncryptedPassword), []byte(pw)) == nil
+}
+
 func NewAccount(firstName, lastName, password string) (*Account, error) {
 	encpw, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
