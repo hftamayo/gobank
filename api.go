@@ -53,9 +53,16 @@ func (s *APIServer) handleLogin(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
-	fmt.Printf("%+v\n", acc)
+	token, err := createJWT(acc)
+	if err != nil {
+		return err
+	}
 
-	return WriteJSON(w, http.StatusOK, req)
+	resp := LoginResponse {
+		Token: token,
+		Number: acc.Number,
+	}
+	return WriteJSON(w, http.StatusOK, resp)
 }
 
 func (s *APIServer) handleAccounts(w http.ResponseWriter, r *http.Request) error {
