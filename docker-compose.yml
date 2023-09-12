@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  pgdb:
+    image: postgres:14.1-alpine
+    restart: always
+    #.env is expected as name and located in root folder
+    env_file: 
+      - ./.env
+    ports:
+      - $PG_LOCAL_PORT:$PG_DOCKER_PORT
+    volumes:
+      - gobankdata:/var/lib/postgresql/data
+        #- ./dockerinit/jsbtodoschema.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - gobankrestnetwork
+
+  gobankrest:
+    depends_on:
+      - pgdb
+    build:
+      context: ./
+      dockerfile: Dockerfile
+        #restart: on-failure
+
+    #.env is expected as name and located in root folder
+    env_file: ./.env
+    ports:
+      - $GOBANK_LOCAL_PORT:$GOBANK_DOCKER_PORT
+    volumes:
+      - .:/opt/hftamayo/gobank
+    networks:
+      - gobankrestnetwork
+
+volumes:
+  gobankdata:
+
+networks:
+  gobankrestnetwork:
