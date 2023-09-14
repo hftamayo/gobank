@@ -2,11 +2,17 @@ version: "3.8"
 
 services:
   pgdb:
+    container_name: pgdb
     image: postgres:14.1-alpine
     restart: always
     #.env is expected as name and located in root folder
     env_file: 
       - ./.env
+    environment:
+      - POSTGRES_USER=${APP_USER}
+      - POSTGRES_PASSWORD=${APP_PASSWORD}
+      - POSTGRES_DB=${APP_DATABASE}
+      - POSTGRES_HOST=${APP_HOST}
     ports:
       - $PG_LOCAL_PORT:$PG_DOCKER_PORT
     volumes:
@@ -16,15 +22,21 @@ services:
       - gobankrestnetwork
 
   gobankrest:
+    container_name: gobankrest
     depends_on:
       - pgdb
     build:
       context: ./
       dockerfile: Dockerfile
         #restart: on-failure
-
     #.env is expected as name and located in root folder
     env_file: ./.env
+    environment:
+      - POSTGRES_USER=${APP_USER}
+      - POSTGRES_PASSWORD=${APP_PASSWORD}
+      - POSTGRES_DB=${APP_DATABASE}
+      - DATABASE_HOST=${APP_HOST}
+      - DATABASE_PORT=${APP_PORT}
     ports:
       - $GOBANK_LOCAL_PORT:$GOBANK_DOCKER_PORT
     volumes:
