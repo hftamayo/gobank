@@ -36,7 +36,7 @@ services:
       - POSTGRES_PASSWORD=${APP_PASSWORD}
       - POSTGRES_DB=${APP_DATABASE}
       - DATABASE_HOST=${APP_HOST}
-      - DATABASE_PORT=${APP_PORT}
+      - DATABASE_PORT=${PG_DOCKER_PORT}
     ports:
       - $APP_LOCAL_PORT:$APP_DOCKER_PORT
     volumes:
