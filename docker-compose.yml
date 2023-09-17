@@ -38,7 +38,7 @@ services:
       - DATABASE_HOST=${APP_HOST}
       - DATABASE_PORT=${APP_PORT}
     ports:
-      - $GOBANK_LOCAL_PORT:$GOBANK_DOCKER_PORT
+      - $APP_LOCAL_PORT:$APP_DOCKER_PORT
     volumes:
       - .:/opt/hftamayo/gobank
     networks:
