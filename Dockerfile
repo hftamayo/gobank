@@ -9,8 +9,8 @@ RUN mkdir /opt/hftamayo
 RUN mkdir /opt/hftamayo/gobank
 WORKDIR /opt/hftamayo/gobank
 
-COPY . /opt/hftamayo/gobank
-COPY .env /opt/hftamayo/gobank
+COPY . ./
+COPY .env ./
 
 RUN go build -o main .
 
