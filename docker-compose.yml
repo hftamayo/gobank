@@ -1,6 +1,29 @@
 version: "3.8"
 
 services:
+  gobankrest:
+    container_name: gobankrest
+    depends_on:
+      - pgdb
+    build:
+      context: ./
+      dockerfile: Dockerfile
+        #restart: on-failure
+    #.env is expected as name and located in root folder
+    env_file: ./.env
+    environment:
+      - DATABASE_HOST=${APP_HOST}
+      - DATABASE_PORT=${PG_DOCKER_PORT}
+      - POSTGRES_USER=${APP_USER}
+      - POSTGRES_PASSWORD=${APP_PASSWORD}
+      - POSTGRES_DB=${APP_DATABASE}
+    ports:
+      - $APP_LOCAL_PORT:$APP_DOCKER_PORT
+    volumes:
+      - .:/opt/hftamayo/gobank
+    networks:
+      - gobankrestnetwork
+
   pgdb:
     container_name: pgdb
     image: postgres:14.1-alpine
@@ -18,29 +41,6 @@ services:
     volumes:
       - gobankdata:/var/lib/postgresql/data
         #- ./dockerinit/jsbtodoschema.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - gobankrestnetwork
-
-  gobankrest:
-    container_name: gobankrest
-    depends_on:
-      - pgdb
-    build:
-      context: ./
-      dockerfile: Dockerfile
-        #restart: on-failure
-    #.env is expected as name and located in root folder
-    env_file: ./.env
-    environment:
-      - POSTGRES_USER=${APP_USER}
-      - POSTGRES_PASSWORD=${APP_PASSWORD}
-      - POSTGRES_DB=${APP_DATABASE}
-      - DATABASE_HOST=${APP_HOST}
-      - DATABASE_PORT=${PG_DOCKER_PORT}
-    ports:
-      - $APP_LOCAL_PORT:$APP_DOCKER_PORT
-    volumes:
-      - .:/opt/hftamayo/gobank
     networks:
       - gobankrestnetwork
 
