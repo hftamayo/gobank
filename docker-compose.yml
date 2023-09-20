@@ -4,7 +4,7 @@ services:
   gobankrest:
     container_name: gobankrest
     depends_on:
-      - pgdb
+      - pgdocker
     build:
       context: ./
       dockerfile: Dockerfile
@@ -19,13 +19,14 @@ services:
       - POSTGRES_DB=${APP_DATABASE}
     ports:
       - $APP_LOCAL_PORT:$APP_DOCKER_PORT
-    volumes:
-      - .:/opt/hftamayo/gobank
+#this volume mounting overrides the compile objects generated in Dockerfile, so it's not necessary
+#    volumes:
+#      - .:/opt/hftamayo/gobank
     networks:
       - gobankrestnetwork
 
-  pgdb:
-    container_name: pgdb
+  pgdocker:
+    container_name: pgdocker
     image: postgres:14.1-alpine
     restart: always
     #.env is expected as name and located in root folder

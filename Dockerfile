@@ -12,6 +12,10 @@ WORKDIR /opt/hftamayo/gobank
 COPY . ./
 COPY .env ./
 
-RUN go build -o main .
+#name of the executable
+RUN go build -o /main
 
-CMD ["./main"]
+EXPOSE 8001 
+
+#run the exec
+CMD ["/main"]
