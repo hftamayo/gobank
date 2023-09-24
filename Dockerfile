@@ -1,5 +1,5 @@
 FROM golang:1.19.3
-FROM golang:alpine
+#FROM golang:alpine
 
 LABEL maintainer="hftamayo"
 
