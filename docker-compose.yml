@@ -4,7 +4,8 @@ services:
   gobankrest:
     container_name: gobankrest
     depends_on:
-      - pgdocker
+      pgdocker:
+        condition: service_healthy
     build:
       context: ./
       dockerfile: Dockerfile
@@ -12,11 +13,11 @@ services:
     #.env is expected as name and located in root folder
     env_file: ./.env
     environment:
-      - DATABASE_HOST=${APP_HOST}
-      - DATABASE_PORT=${PG_DOCKER_PORT}
-      - POSTGRES_USER=${APP_USER}
-      - POSTGRES_PASSWORD=${APP_PASSWORD}
-      - POSTGRES_DB=${APP_DATABASE}
+      - DATABASE_HOST:${APP_HOST}
+      - DATABASE_PORT:${PG_DOCKER_PORT}
+      - POSTGRES_USER:${APP_USER}
+      - POSTGRES_PASSWORD:${APP_PASSWORD}
+      - POSTGRES_DB:${APP_DATABASE}
     ports:
       - $APP_LOCAL_PORT:$APP_DOCKER_PORT
 #this volume mounting overrides the compile objects generated in Dockerfile, so it's not necessary
@@ -33,12 +34,17 @@ services:
     env_file: 
       - ./.env
     environment:
-      - POSTGRES_USER=${APP_USER}
-      - POSTGRES_PASSWORD=${APP_PASSWORD}
-      - POSTGRES_DB=${APP_DATABASE}
-      - POSTGRES_HOST=${APP_HOST}
+      - POSTGRES_USER:${APP_USER}
+      - POSTGRES_PASSWORD:${APP_PASSWORD}
+      - POSTGRES_DB:${APP_DATABASE}
+      - POSTGRES_HOST:${APP_HOST}
     ports:
       - $PG_LOCAL_PORT:$PG_DOCKER_PORT
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - gobankdata:/var/lib/postgresql/data
         #- ./dockerinit/jsbtodoschema.sql:/docker-entrypoint-initdb.d/init.sql
