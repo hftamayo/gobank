@@ -41,7 +41,7 @@ services:
     ports:
       - $PG_LOCAL_PORT:$PG_DOCKER_PORT
     healthcheck:
-      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${APP_USER} -d ${APP_DATABASE}'"]
       interval: 10s
       timeout: 5s
       retries: 5
