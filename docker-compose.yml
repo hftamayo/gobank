@@ -1,10 +1,10 @@
 version: "3.8"
 
 services:
-  gobankrest:
+  app:
     container_name: gobankrest
     depends_on:
-      pgdocker:
+      db:
         condition: service_healthy
     build:
       context: ./
@@ -26,7 +26,7 @@ services:
     networks:
       - gobankrestnetwork
 
-  pgdocker:
+  db:
     container_name: pgdocker
     image: postgres:14.1-alpine
     restart: always
@@ -41,7 +41,7 @@ services:
     ports:
       - $PG_LOCAL_PORT:$PG_DOCKER_PORT
     healthcheck:
-      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${APP_USER} -d ${APP_DATABASE}'"]
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}'"]
       interval: 10s
       timeout: 5s
       retries: 5
