@@ -3,6 +3,7 @@ version: "3.8"
 services:
   app:
     container_name: gobankrest
+    restart: always
     depends_on:
       db:
         condition: service_healthy
