@@ -1,0 +1,14 @@
+# Use the official PostgreSQL image as a parent image
+FROM postgres:14.1-alpine
+
+# Copy the .env file into the container
+COPY .env /tmp/.env
+
+# Set environment variables from .env file
+ENV POSTGRES_USER=""
+ENV POSTGRES_PASSWORD=""
+ENV POSTGRES_DB=""
+ENV POSTGRES_HOST=""
+
+# Run a shell script to load environment variables from .env and start PostgreSQL
+CMD ["sh", "-c", "source /tmp/.env && pg_ctl -D /var/lib/postgresql/data -l logfile start && tail -f logfile"]

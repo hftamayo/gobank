@@ -1,0 +1,22 @@
+# Use the official Go image as a parent image
+FROM golang:1.19.3
+
+LABEL maintainer="hftamayo"
+
+# Create directories for the application
+RUN mkdir -p /opt/hftamayo/gobank
+
+# Set the working directory to the application's directory
+WORKDIR /opt/hftamayo/gobank
+
+# Copy source code, .env file, and any other necessary files
+COPY . ./
+
+# Build the Go application
+RUN go build -o /opt/hftamayo/gobank/main
+
+# Expose the application's port
+EXPOSE 8001
+
+# Run the executable
+CMD ["/opt/hftamayo/gobank/main"]
